@@ -20,11 +20,17 @@ public class ThinkInMySpringApplication {
     }
 
 //    @Primary
-//    @Bean
-//    public TaskExecutor primaryTaskExecutor() {
-//        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-//        // add necessary properties to the executor
-//        return executor;
-//    }
+    @Bean
+    public TaskExecutor primaryTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        // add necessary properties to the executor
+        return executor;
+    }
 
+    @Bean
+    public TaskExecutor getTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        // add necessary properties to the executor
+        return executor;
+    }
 }

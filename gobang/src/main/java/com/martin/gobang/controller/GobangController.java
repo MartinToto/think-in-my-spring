@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author Martin
@@ -32,8 +33,8 @@ public class GobangController {
         Integer width = 19;
         Integer length = 19;
         Gobang gobang = new Gobang(width, length);
-        Long time = new Date().getTime();
-        Integer hashCode = time.hashCode();
+        UUID uuid = UUID.randomUUID();
+        Integer hashCode = uuid.hashCode();
         String roomNumber = hashCode.toString();
         int[][] core = getCoreDate(width, length,roomNumber);
         gobang.setCore(core);
@@ -225,16 +226,38 @@ public class GobangController {
         return -1;
     }
 
+    /**
+     * 左斜下 到 右斜上
+     * @param core
+     * @param x
+     * @param y
+     * @param var
+     * @return
+     */
     private Integer getLeftDown2RightUp(int[][] core, int x, int y, int var) {
         int length = core.length -1;
-        int K = Math.abs(x-y);
-        //y = x - k
+        // y = -x + K
+        int K = y+x;
         int startX = length;
-        int startY = K;
-
+        int startY = 0;
+        int endX = 0;
         int endY = length;
-        int endX = K;
+        if(K<length){
+            startY = 0;
+            startX = K-startY;
 
+            endX = 0;
+            endY = -endX + K;
+
+        }
+        if(K>length){
+            startX = length;
+            startY = -startX + K;
+
+            endY = length;
+            endX = K - endY;
+        }
+        System.out.println("左斜下 到 右斜上 startX: "+startX+",startY:"+startY+",endX:"+endX+",endY:"+endY);
         //上一个棋子的状态 用以做连续性
         boolean isFlag = false;
         if (core[startX][startY] == var) {
@@ -256,15 +279,35 @@ public class GobangController {
         return -1;
     }
 
+    /**
+     * //左斜上 到 右斜下
+     * @param core
+     * @param x
+     * @param y
+     * @param var
+     * @return
+     */
     private Integer getLeftUp2RightDown(int[][] core, int x, int y, int var) {
         int length = core.length-1;
-        //y = x-k
-        int K = Math.abs(x-y);
+        //y = x+k
+        int K = y-x;
+        int startX = 0;
         int startY = 0;
-        int startX = startY+K;
-
         int endX = length;
-        int endY = endX - K;
+        int endY = length;
+        if(K>0){
+            startX = 0;
+            startY = startY + K;
+            endY = length;
+            endX = endY - K;
+        }
+        if(K<0){
+            startY = 0;
+            startX = startY - K;
+            endX = length;
+            endY = endX - K;
+        }
+        System.out.println("左斜上 到 右斜下 startX: "+startX+",startY:"+startY+",endX:"+endX+",endY:"+endY);
         //上一个棋子的状态 用以做连续性
         boolean isFlag = false;
         if (core[startX][startY] == var) {

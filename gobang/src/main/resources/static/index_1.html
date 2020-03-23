@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            background: url(chessboard.jpg) no-repeat 100%/100%;
+        }
+        .chessboard {
+            width: 880px;
+            height: 880px;
+            margin: 100px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .chess {
+            width: 40px;
+            height: 40px;
+            margin: 10px;
+            display:inline-block;
+            border-radius: 100%;
+            position: relative;
+            background-color: transparent; 
+        }
+        .chess.active.white{
+            background-color: #fff;
+        }
+        .chess.active.black {
+            background-color: #000
+        }
+        .chess.leftover::before {
+            left: 150%;
+        }
+        .chess.rightover::before {
+            left: -50%;
+        }
+        .chess.topover::after {
+            top: 150%;
+        }
+        .chess.bottomover::after {
+            top: -50%;
+        }
+        .chess::before {
+            content: '';
+            display: inline-block;
+            width: 200%;
+            height: 2.5px;
+            background-color: purple;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+        .chess::after {
+            content: '';
+            display: inline-block;
+            width: 2.5px;
+            height: 200%;
+            background-color: purple;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="chessboard">
+    </div>
+</body>
+<script>
+    var chessboard = document.querySelector('.chessboard')
+    var row = column = 14
+    var actor = 1
+    for (let r = 0; r < row; r++) {
+        for (let c = 0; c < column; c++) {
+            var chess = document.createElement('div')
+            chess.classList.add('chess')
+            chess.setAttribute('row', r+1)
+            chess.setAttribute('column', c+1)
+            if (r == 0) {
+                chess.classList.add('topover')
+            }
+            if (r == row - 1) {
+                chess.classList.add('bottomover')
+            }
+            if (c == 0) {
+                chess.classList.add('leftover')
+            }
+            if (c == column - 1) {
+                chess.classList.add('rightover')
+            }
+            chess.onclick = function () {
+                this.classList.add('active')
+                if (actor == 1) {
+                    this.classList.add('white')
+                    actor = 2
+                } else {
+                    this.classList.add('black')
+                    actor = 1
+                }
+            }
+            chessboard.appendChild(chess)
+        }
+    }
+</script>
+</html>

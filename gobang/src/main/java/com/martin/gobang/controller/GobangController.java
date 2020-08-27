@@ -23,13 +23,14 @@ import java.util.UUID;
  * @date 2020/3/15
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("/v1")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class GobangController {
 
-    @RequestMapping(value = "/init", method = RequestMethod.GET)
+//    @RequestMapping(value = "/init", method = RequestMethod.GET)
+    @RequestMapping(value = "/start", method = RequestMethod.GET)
     @ResponseBody
-    public String findOrders(HttpServletResponse response,
-                             HttpServletRequest request) {
+    public String init() {
         Integer width = 19;
         Integer length = 19;
         Gobang gobang = new Gobang(width, length);
@@ -38,7 +39,7 @@ public class GobangController {
         String roomNumber = hashCode.toString();
         int[][] core = getCoreDate(width, length,roomNumber);
         gobang.setCore(core);
-        System.out.println(gobang.toString());
+        System.out.println("--------------------::"+roomNumber);
         return roomNumber;
     }
 
@@ -170,6 +171,7 @@ public class GobangController {
         if (endX > length) {
             endX = length;
         }
+        System.out.println("纵向 startX: "+startX+",startY:"+endX+",endX:"+x+",endY:"+y);
         //是否是连续性
         boolean isFlag = false;
         if (core[startX][y] == var) {
@@ -205,6 +207,8 @@ public class GobangController {
         if (endY > length) {
             endY = length;
         }
+
+        System.out.println("横向 startX: "+x+",startY:"+startY+",endX:"+x+",endY:"+endY);
         //是否是连续性
         boolean isFlag = false;
         if (core[x][startY] == var) {
